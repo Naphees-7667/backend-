@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // CORS configuration
-const allowedOrigins = ["https://bajaj-assignment-3y6u.vercel.app"];
+const allowedOrigins = ["https://bajaj-assignment-lime.vercel.app/"];
 app.use(
   cors({
     origin: allowedOrigins,
