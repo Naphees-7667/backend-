@@ -1,10 +1,22 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-app.use(cors());
-const dotenv = require("dotenv");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+
+// Load environment variables
 dotenv.config();
+
+const app = express();
 const PORT = process.env.PORT || 3000;
+
+// CORS configuration
+const allowedOrigins = ["https://bajaj-assignment-3y6u.vercel.app"];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 app.use(express.json());
 
@@ -24,7 +36,9 @@ app.post("/bfhl", (req, res) => {
     const numbers = data.filter(item => !isNaN(item));
     const alphabets = data.filter(item => isNaN(item));
     
-    const highest_alphabet = alphabets.length ? [alphabets.sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })).pop()] : [];
+    const highest_alphabet = alphabets.length
+      ? [alphabets.sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })).pop()]
+      : [];
     
     res.status(200).json({
       is_success: true,
@@ -33,7 +47,7 @@ app.post("/bfhl", (req, res) => {
       roll_number: "ABCD123",
       numbers,
       alphabets,
-      highest_alphabet
+      highest_alphabet,
     });
   } catch (error) {
     res.status(500).json({ is_success: false, message: "Internal Server Error" });
