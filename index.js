@@ -1,8 +1,6 @@
-import express from "express";
+import express from "express"; 
 import cors from "cors";
 import dotenv from "dotenv";
-
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -20,8 +18,13 @@ app.use(
 
 app.use(express.json());
 
+// Redirect GET and POST requests from "/" to "/bfhl"
 app.get("/", (req, res) => {
-    res.status(200).json({ message: "Hello from the backend!" });
+  res.redirect(307, "/bfhl"); // 307 preserves request method
+});
+
+app.post("/", (req, res) => {
+  res.redirect(307, "/bfhl");
 });
 
 // GET request to return operation_code
@@ -55,7 +58,6 @@ app.post("/bfhl", (req, res) => {
       }
     }
 
-    
     res.status(200).json({
       is_success: true,
       user_id: "Naphees_Iqubal_30062004",
