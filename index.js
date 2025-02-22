@@ -36,13 +36,25 @@ app.post("/bfhl", (req, res) => {
     if (!Array.isArray(data)) {
       return res.status(400).json({ is_success: false, message: "Invalid input format" });
     }
-    
-    const numbers = data.filter(item => !isNaN(item));
-    const alphabets = data.filter(item => isNaN(item));
-    
-    const highest_alphabet = alphabets.length
-      ? [alphabets.sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })).pop()]
-      : [];
+
+    const numbers = [];
+    const alphabets = [];
+    let highest_alphabet = "";
+
+    for (const item of data) {
+      if (!isNaN(item)) {
+        numbers.push(item);
+      } else if (item.length === 1 && isNaN(item)) {
+        alphabets.push(item);
+        if (
+          !highest_alphabet ||
+          item.toUpperCase() > highest_alphabet.toUpperCase()
+        ) {
+          highest_alphabet = item;
+        }
+      }
+    }
+
     
     res.status(200).json({
       is_success: true,
